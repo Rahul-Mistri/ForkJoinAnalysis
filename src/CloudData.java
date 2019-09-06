@@ -1,4 +1,4 @@
-package cloudscapes;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -60,9 +60,43 @@ public class CloudData {
 			e.printStackTrace();
 		}
 	}
+
+
+	float getLocalAverage(int [] arr){
+		int num= 0;
+		float sumx = 0;
+		float sumy = 0;
+		for (int i = Math.max(0, arr[1]-1); i < Math.min(dimx,arr[1]+2); i++) {
+			for (int j = Math.max(0, arr[2]-1); j < Math.min(dimy,arr[2]+2); j++) {
+				sumx = sumx + advection[arr[0]][arr[i]][arr[j]].x;
+				sumy = sumy + advection[arr[0]][arr[i]][arr[j]].y;
+				num++;
+			}
+		}
+		Vector v = new Vector();
+		v.x = sumx/num;
+		v.y = sumy/num;
+		return v.getMag();
+	}
+
+	void classify(int [] arr){
+		float ave = getLocalAverage(arr);
+		if(ave<convection[arr[0]][arr[1]][arr[2]]){
+			classification[arr[0]][arr[1]][arr[2]]= 0;
+		}
+		else if(ave>0.2){
+			classification[arr[0]][arr[1]][arr[2]]= 1;
+		}
+		else{
+			classification[arr[0]][arr[1]][arr[2]]= 2;
+		}
+	}
 	
 	// write classification output to file
 	void writeData(String fileName, Vector wind){
+		writeData(fileName, wind, "time:\tn/a");
+	}
+	void writeData(String fileName, Vector wind, String time){
 		 try{ 
 			 FileWriter fileWriter = new FileWriter(fileName);
 			 PrintWriter printWriter = new PrintWriter(fileWriter);
@@ -77,6 +111,8 @@ public class CloudData {
 				 }
 				 printWriter.printf("\n");
 		     }
+
+			 printWriter.print(time);
 				 
 			 printWriter.close();
 		 }
