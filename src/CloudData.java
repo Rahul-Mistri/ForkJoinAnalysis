@@ -43,9 +43,9 @@ public class CloudData {
 				for(int x = 0; x < dimx; x++)
 					for(int y = 0; y < dimy; y++){
 						advection[t][x][y] = new Vector();
-						advection[t][x][y].x = sc.nextFloat();
-						advection[t][x][y].y = sc.nextFloat();
-						convection[t][x][y] = sc.nextFloat();
+						advection[t][x][y].x = Float.valueOf(sc.next());
+						advection[t][x][y].y = Float.valueOf(sc.next());
+						convection[t][x][y] = Float.valueOf(sc.next());
 					}
 			
 			classification = new int[dimt][dimx][dimy];
@@ -68,8 +68,8 @@ public class CloudData {
 		float sumy = 0;
 		for (int i = Math.max(0, arr[1]-1); i < Math.min(dimx,arr[1]+2); i++) {
 			for (int j = Math.max(0, arr[2]-1); j < Math.min(dimy,arr[2]+2); j++) {
-				sumx = sumx + advection[arr[0]][arr[i]][arr[j]].x;
-				sumy = sumy + advection[arr[0]][arr[i]][arr[j]].y;
+				sumx = sumx + advection[arr[0]][i][j].x;
+				sumy = sumy + advection[arr[0]][i][j].y;
 				num++;
 			}
 		}
@@ -80,8 +80,8 @@ public class CloudData {
 	}
 
 	void classify(int [] arr){
-		float ave = getLocalAverage(arr);
-		if(ave<convection[arr[0]][arr[1]][arr[2]]){
+		float ave = Math.abs(getLocalAverage(arr));
+		if(ave<Math.abs(convection[arr[0]][arr[1]][arr[2]])){
 			classification[arr[0]][arr[1]][arr[2]]= 0;
 		}
 		else if(ave>0.2){

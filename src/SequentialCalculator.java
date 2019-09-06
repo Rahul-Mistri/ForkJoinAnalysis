@@ -30,18 +30,23 @@ public class SequentialCalculator {
         start = System.currentTimeMillis();
     }
     private static float tock(){
-        return (System.currentTimeMillis() - start) / 1000.0f;
+        return (System.currentTimeMillis() - start);
     }
 
 
     public static void main(String[] args) {
         SequentialCalculator sc = new SequentialCalculator();
-        sc.populate("I1");
+        sc.populate("largesample_input.txt");
         System.gc();
-        tick();
+        double s = System.currentTimeMillis();
         sc.compute();
+        double e = System.currentTimeMillis();
         time = time +tock();
-        sc.write("O1",time);
+        //System.out.println(System.currentTimeMillis());
+        //System.out.println(time);
+
+        System.out.println(e-s);
+        sc.write("O2",time);
 
     }
 }
