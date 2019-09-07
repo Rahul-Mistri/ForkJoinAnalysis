@@ -12,7 +12,8 @@ public class SequentialCalculator {
     }
 
     public void compute(){
-
+        sumx=0;
+        sumy=0;
         int[] pos = new int[3];
         for (int i = 0; i < length; i++) {
             cd.locate(i, pos);
@@ -37,7 +38,12 @@ public class SequentialCalculator {
     public static void main(String[] args) {
         SequentialCalculator sc = new SequentialCalculator();
         sc.populate("largesample_input.txt");
+
+        for (int i = 0; i < 9; i++) {
+            sc.compute();
+        }
         System.gc();
+
         double s = System.currentTimeMillis();
         sc.compute();
         double e = System.currentTimeMillis();
@@ -46,7 +52,7 @@ public class SequentialCalculator {
         //System.out.println(time);
 
         System.out.println(e-s);
-        sc.write("O2",time);
+        sc.write("O211",time);
 
     }
 }

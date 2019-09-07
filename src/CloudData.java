@@ -102,7 +102,7 @@ public class CloudData {
 			 PrintWriter printWriter = new PrintWriter(fileWriter);
 			 printWriter.printf("%d %d %d\n", dimt, dimx, dimy);
 			 printWriter.printf("%f %f\n", wind.x, wind.y);
-			 
+			 printWriter.print(time+"\n");
 			 for(int t = 0; t < dimt; t++){
 				 for(int x = 0; x < dimx; x++){
 					for(int y = 0; y < dimy; y++){
@@ -112,7 +112,7 @@ public class CloudData {
 				 printWriter.printf("\n");
 		     }
 
-			 printWriter.print(time);
+
 				 
 			 printWriter.close();
 		 }
