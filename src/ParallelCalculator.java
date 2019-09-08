@@ -65,16 +65,23 @@ public class ParallelCalculator extends RecursiveTask<Vector> {
     public static void main(String[] args) {
         populate("largesample_input.txt");
         System.gc();
-        Vector average = sum();
-        for (int i = 0; i < 8; i++) {
+        Vector average;
+        for (int i = 0; i < 9; i++) {
             average = sum();
         }
-        System.gc();
-        double s = System.currentTimeMillis();
-        average = sum();
-        double e = System.currentTimeMillis();
+        double times[] = new double[5];
+        double sum=0;
+        for (int i = 0; i < 5; i++) {
+            System.gc();
+            double s = System.currentTimeMillis();
+            average = sum();
+            double e = System.currentTimeMillis();
+            sum+=(e-s);
+            times[i]=(e-s)/1000;
+            System.out.println(times[i]);
+            write("parallel_run_"+(i+1),"Sequential Cut Off: "+SEQUENTIAL_CUTOFF+"\ntime: "+times[i], average);
+        }
+        System.out.println(sum/5000);
 
-        System.out.println(e-s);
-        //write("finaleeseq100", "time:\t"+(e-s),average);
     }
 }

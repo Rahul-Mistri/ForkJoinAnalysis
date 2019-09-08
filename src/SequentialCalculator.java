@@ -42,16 +42,15 @@ public class SequentialCalculator {
         for (int i = 0; i < 9; i++) {
             sc.compute();
         }
-        System.gc();
 
-        double s = System.currentTimeMillis();
-        sc.compute();
-        double e = System.currentTimeMillis();
-        time = time +tock();
-        //System.out.println(System.currentTimeMillis());
-        //System.out.println(time);
+        for (int i = 0; i < 5; i++) {
+            System.gc();
+            double s = System.currentTimeMillis();
+            sc.compute();
+            double e = System.currentTimeMillis();
 
-        System.out.println(e-s);
+        }
+
         sc.write("O211",time);
 
     }
