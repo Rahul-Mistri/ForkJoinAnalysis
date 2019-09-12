@@ -2,6 +2,7 @@
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -30,7 +31,7 @@ public class CloudData {
 	void readData(String fileName){ 
 		try{ 
 			Scanner sc = new Scanner(new File(fileName), "UTF-8");
-			
+			sc.useLocale(Locale.UK);
 			// input grid dimensions and simulation duration in timesteps
 			dimt = sc.nextInt();
 			dimx = sc.nextInt(); 

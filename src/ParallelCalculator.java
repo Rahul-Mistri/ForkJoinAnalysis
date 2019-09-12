@@ -1,3 +1,5 @@
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 
@@ -62,26 +64,51 @@ public class ParallelCalculator extends RecursiveTask<Vector> {
     }
 
 
+
+
+    static void writeTime(String fileName, String[] strings){
+        try {
+            FileWriter fileWriter = new FileWriter(fileName);
+            PrintWriter pw = new PrintWriter(fileWriter);
+            for (String s: strings) {
+                pw.write(s+"\n");
+            }
+            pw.close();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
-        populate("largesample_input.txt");
-        System.gc();
-        Vector average;
-        for (int i = 0; i < 9; i++) {
-            average = sum();
-        }
-        double times[] = new double[5];
-        double sum=0;
-        for (int i = 0; i < 5; i++) {
+        String[] sA = new String[4];
+        int count = -1;
+        for (int g = 750; g <=1500; g+=250) {
+            count++;
+
+            String file = "IN20" + "-" + g + "-" + g + ".txt";
+            populate(file);
             System.gc();
-            double s = System.currentTimeMillis();
-            average = sum();
-            double e = System.currentTimeMillis();
-            sum+=(e-s);
-            times[i]=(e-s)/1000;
-            System.out.println(times[i]);
-            write("parallel_run_"+(i+1),"Sequential Cut Off: "+SEQUENTIAL_CUTOFF+"\ntime: "+times[i], average);
+            Vector average;
+            for (int i = 0; i <9; i++) {
+                average = sum();
+            }
+            double sum=0;
+            for (int i = 0; i < 50; i++) {
+                System.gc();
+                double s = System.currentTimeMillis();
+                average = sum();
+                double e = System.currentTimeMillis();
+                sum+=((e-s)/1000);
+                //write("parallel_run_"+(i+1),"Sequential Cut Off: "+SEQUENTIAL_CUTOFF+"\ntime: "+times[i], average);
+            }
+            System.out.println(sum/50);
+            sA[count]=file+"\t\t\tTime:\t"+(sum/50);
+
+
+
         }
-        System.out.println(sum/5000);
+        writeTime("large"+SEQUENTIAL_CUTOFF, sA);
 
     }
 }

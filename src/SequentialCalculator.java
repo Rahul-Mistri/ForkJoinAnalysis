@@ -1,3 +1,6 @@
+import java.io.FileWriter;
+import java.io.PrintWriter;
+
 public class SequentialCalculator {
     CloudData cd = new CloudData();
     static float start = 0;
@@ -27,6 +30,20 @@ public class SequentialCalculator {
         cd.writeData(filename,new Vector(sumx/length,sumy/length),t);
     }
 
+    public void writeTime(String fileName, String[] strings){
+        try {
+            FileWriter fileWriter = new FileWriter(fileName);
+            PrintWriter pw = new PrintWriter(fileWriter);
+            for (String s: strings) {
+                pw.write(s+"\n");
+            }
+            pw.close();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     private static void tick(){
         start = System.currentTimeMillis();
     }
@@ -37,21 +54,32 @@ public class SequentialCalculator {
 
     public static void main(String[] args) {
         SequentialCalculator sc = new SequentialCalculator();
-        sc.populate("largesample_input.txt");
+        String[] sA = new String[5];
+        int count = -1;
+        for (int g = 750; g <=1500; g+=250) {
+            count++;
 
-        for (int i = 0; i < 9; i++) {
-            sc.compute();
+            String file = "IN20" + "-" + g + "-" + g + ".txt";
+            sc.populate(file);
+
+            for (int i = 0; i < 9; i++) {
+                sc.compute();
+            }
+            double sum = 0;
+            for (int i = 0; i < 50; i++) {
+                System.gc();
+                double s = System.currentTimeMillis();
+                sc.compute();
+                double e = System.currentTimeMillis();
+                sum += ((e - s) / 1000);
+
+            }
+            System.out.println(sum / 50);
+            sA[count]=file+"\t\t\ttime:\t"+(sum/50);
+
         }
-
-        for (int i = 0; i < 5; i++) {
-            System.gc();
-            double s = System.currentTimeMillis();
-            sc.compute();
-            double e = System.currentTimeMillis();
-
-        }
-
-        sc.write("O211",time);
+        sc.writeTime("large.txt",sA);
 
     }
+
 }
