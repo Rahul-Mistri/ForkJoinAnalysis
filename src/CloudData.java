@@ -14,12 +14,13 @@ public class CloudData {
 	int [][][] classification; // cloud type per grid point, evolving over time
 	int dimx, dimy, dimt; // data dimensions
 
-	// overall number of elements in the timeline grids
+	/** overall number of elements in the timeline grids
+	 * */
 	int dim(){
 		return dimt*dimx*dimy;
 	}
 	
-	// convert linear position into 3D location in simulation grid
+	/**convert linear position into 3D location in simulation grid*/
 	void locate(int pos, int [] ind)
 	{
 		ind[0] = (int) pos / (dimx*dimy); // t
@@ -27,7 +28,7 @@ public class CloudData {
 		ind[2] = pos % (dimy); // y
 	}
 	
-	// read cloud simulation data from file
+	/** read cloud simulation data from file*/
 	void readData(String fileName){ 
 		try{ 
 			Scanner sc = new Scanner(new File(fileName), "UTF-8");
@@ -62,7 +63,7 @@ public class CloudData {
 		}
 	}
 
-
+	/** calculates the local average given its coordinates*/
 	float getLocalAverage(int [] arr){
 		int num= 0;
 		float sumx = 0;
@@ -79,7 +80,7 @@ public class CloudData {
 		v.y = sumy/num;
 		return v.getMag();
 	}
-
+	/** classifies the wind vector based on its local average*/
 	void classify(int [] arr){
 		float ave = Math.abs(getLocalAverage(arr));
 		if(ave<Math.abs(convection[arr[0]][arr[1]][arr[2]])){
@@ -93,10 +94,11 @@ public class CloudData {
 		}
 	}
 	
-	// write classification output to file
+	/** write classification output to file*/
 	void writeData(String fileName, Vector wind){
 		writeData(fileName, wind, "time:\tn/a");
 	}
+	/** write classification output to file*/
 	void writeData(String fileName, Vector wind, String time){
 		 try{ 
 			 FileWriter fileWriter = new FileWriter(fileName);
