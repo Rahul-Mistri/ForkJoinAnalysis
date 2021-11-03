@@ -58,9 +58,8 @@ public class SequentialCalculator {
 
     public static void main(String[] args) {
         SequentialCalculator sc = new SequentialCalculator();
-        String temp[] = args[0].split(" ");
-        String infile = temp[0];
-        String outfile = temp[1];
+        String infile = args[0];
+        String outfile = args[1];
         /*String[] sA = new String[5];*/
         /*int count = -1;
         for (int g = 750; g <=1500; g+=250) {
